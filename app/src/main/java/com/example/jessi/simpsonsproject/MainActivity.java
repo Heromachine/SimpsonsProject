@@ -15,7 +15,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.jessi.simpsonsproject.models.AllCharacters;
 import com.example.jessi.simpsonsproject.models.Character;
-import com.example.jessi.simpsonsproject.models.pojo.SimpsonsPojo;
+import com.example.jessi.simpsonsproject.models.RelatedTopics;
+import com.example.jessi.simpsonsproject.models.Simpsons;
 import com.example.jessi.simpsonsproject.retrofit.ApiService;
 import com.example.jessi.simpsonsproject.retrofit.RetrofitInstance;
 
@@ -46,29 +47,30 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         Log.d(TAG, "init: ");
         //jSonCall(jSonUrl);
-        retrofitCall();
+
+        retrofitCall02();
     }
 
-    private void retrofitCall()
-    {
+    private void retrofitCall02(){
+        
         Log.d(TAG, "retrofitCall: ");
         ApiService apiService = RetrofitInstance.getRetrofitInstance()
                 .create(ApiService.class);
-        Call<SimpsonsPojo> simpsonsCall = apiService.getSimpsons();
-        simpsonsCall.enqueue(new Callback<SimpsonsPojo>() {
+        Call<Simpsons> simpsonsCall = apiService.getRelatedTopics();
+        simpsonsCall.enqueue(new Callback<Simpsons>() {
             @Override
-            public void onResponse(Call<SimpsonsPojo> call, retrofit2.Response<SimpsonsPojo> response) {
-                Log.d(TAG, "onResponse: ");
+            public void onResponse(Call<Simpsons> call, retrofit2.Response<Simpsons> response) {
                 final List<String> names = new ArrayList<String>();
                 final AllCharacters allCharacters = new AllCharacters();
+                Log.d(TAG, "onResponse: " + response.body().getRelatedTopicsList().toString());
+                Simpsons simpsons = response.body();
+                for (int i = 0; i < simpsons.getRelatedTopicsList().size(); i++) {
+                    Log.d(TAG, "onResponse: Simpsons" + simpsons.getRelatedTopicsList().get(0));
 
-                for(int i = 0; i< response.body().getRelatedTopics().size(); i++)
-                {
-                    Log.d(TAG, "onResponse: " + i + " :: "+response.body().getRelatedTopics().get(i).getText() );
                     Character character = new Character(
-                            response.body().getRelatedTopics().get(i).getText(),
-                            response.body().getRelatedTopics().get(i).getIcon().getURL());
-                    names.add(character.getName());
+                            response.body().getRelatedTopicsList().get(i).getText(),
+                            response.body().getRelatedTopicsList().get(i).getIcons().getURL());
+                    names.add((i + 1) + ")" + character.getName());
                     allCharacters.addCharacter(character);
                 }
 
@@ -79,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                                 R.id.tv_character,
                                 names
                         );
-
                 listView = findViewById(R.id.lv_names);
                 listView.setAdapter(arrayAdapter);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -99,11 +100,67 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<SimpsonsPojo> call, Throwable t) {
-
+            public void onFailure(Call<Simpsons> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getMessage());
             }
         });
     }
+
+//    private void retrofitCall()
+//    {
+//        Log.d(TAG, "retrofitCall: ");
+//        ApiService apiService = RetrofitInstance.getRetrofitInstance()
+//                .create(ApiService.class);
+//        Call<SimpsonsPojo> simpsonsCall = apiService.getSimpsons();
+//        simpsonsCall.enqueue(new Callback<SimpsonsPojo>() {
+//            @Override
+//            public void onResponse(Call<SimpsonsPojo> call, retrofit2.Response<SimpsonsPojo> response) {
+//                Log.d(TAG, "onResponse: =================================" + response.body().toString());
+//                final List<String> names = new ArrayList<String>();
+//                final AllCharacters allCharacters = new AllCharacters();
+//
+//                for(int i = 0; i< response.body().getRelatedTopics().size(); i++)
+//                {
+//                    Log.d(TAG, "onResponse: " + i + " :: "+response.body().getRelatedTopics().get(i).getText() );
+//                    Character character = new Character(
+//                            response.body().getRelatedTopics().get(i).getText(),
+//                            response.body().getRelatedTopics().get(i).getIcon().getURL());
+//                    names.add(character.getName());
+//                    allCharacters.addCharacter(character);
+//                }
+//
+//                arrayAdapter = new ArrayAdapter<String>
+//                        (
+//                                MainActivity.this,
+//                                R.layout.listitem,
+//                                R.id.tv_character,
+//                                names
+//                        );
+//
+//                listView = findViewById(R.id.lv_names);
+//                listView.setAdapter(arrayAdapter);
+//                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//                        Log.d(TAG, "onItemClick: allCharacters print: size["+ allCharacters.getCharacterList().size() +"], name" + allCharacters.getCharacterList().get(0).getName());
+//                        Intent mIntent = new Intent(MainActivity.this, CharacterActivity.class);
+//                        Bundle mBundle = new Bundle();
+//                        mBundle.putString("Name", allCharacters.getCharacterList().get(i).getName());
+//                        mBundle.putString("Description", allCharacters.getCharacterList().get(i).getDescription());
+//                        mBundle.putString("ImageURL", allCharacters.getCharacterList().get(i).getImageUrl());
+//                        mIntent.putExtras(mBundle);
+//                        startActivity(mIntent);
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onFailure(Call<SimpsonsPojo> call, Throwable t) {
+//
+//            }
+//        });
+//    }
 
     private void jSonCall(String url) {
         Log.d(TAG, "jSonCall: ");
