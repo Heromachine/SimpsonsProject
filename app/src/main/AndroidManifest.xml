@@ -19,7 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CharacterActivity"></activity>
+        <activity android:name=".CharacterActivity" />
+        <activity android:name=".RetrofitActivity" />
+        <activity android:name=".JSonActivity"></activity>
     </application>
 
 </manifest>
