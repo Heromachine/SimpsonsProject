@@ -33,8 +33,5 @@ public class CharacterActivity extends AppCompatActivity {
         {
             characterImage.setImageResource(R.drawable.ic_launcher_background);
         }
-
-
-
     }
 }

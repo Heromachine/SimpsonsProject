@@ -1,4 +1,4 @@
-package com.example.jessi.simpsonsproject;
+package com.example.jessi.simpsonsproject.retrofitflavor;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,15 +9,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.jessi.simpsonsproject.CharacterActivity;
+import com.example.jessi.simpsonsproject.R;
 import com.example.jessi.simpsonsproject.models.AllCharacters;
 import com.example.jessi.simpsonsproject.models.Character;
 import com.example.jessi.simpsonsproject.models.Simpsons;
 import com.example.jessi.simpsonsproject.retrofit.ApiService;
 import com.example.jessi.simpsonsproject.retrofit.RetrofitInstance;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -28,7 +28,6 @@ public class RetrofitActivity extends AppCompatActivity {
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +36,6 @@ public class RetrofitActivity extends AppCompatActivity {
     }
 
     private void retrofitCall(){
-
         Log.d(TAG, "retrofitCall: ");
         ApiService apiService = RetrofitInstance.getRetrofitInstance()
                 .create(ApiService.class);

@@ -1,21 +1,51 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.jessi.simpsonsproject"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField("String", "SERVER_URL_SIMP", '"http://api.duckduckgo.com/?q=simpsons+characters&format=json"')
+            buildConfigField("String", "SERVER_URL_XFIN", '"?q=the+wire+characters&format=json"')
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "flavorDimen"
+    productFlavors {
+
+
+        retrofit {
+            dimension "flavorDimen"
+            minSdkVersion 17
+            applicationId "com.example.jessi.simpsonsproject.retrofitflavor"
+            versionName "retrofit"
+
+        }
+        volley {
+            dimension "flavorDimen"
+            minSdkVersion 17
+            applicationId "com.example.jessi.simpsonsproject.volleyflavor"
+            versionName "volley"
+
+        }
+    }
+
+
 }
 
 dependencies {

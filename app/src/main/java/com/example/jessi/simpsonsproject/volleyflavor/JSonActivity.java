@@ -1,4 +1,4 @@
-package com.example.jessi.simpsonsproject;
+package com.example.jessi.simpsonsproject.volleyflavor;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +13,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.jessi.simpsonsproject.BuildConfig;
+import com.example.jessi.simpsonsproject.utils.AppController;
+import com.example.jessi.simpsonsproject.CharacterActivity;
+import com.example.jessi.simpsonsproject.R;
 import com.example.jessi.simpsonsproject.models.AllCharacters;
 import com.example.jessi.simpsonsproject.models.Character;
 
@@ -25,8 +29,8 @@ import java.util.List;
 
 public class JSonActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
-    private final static String jSonUrl = "http://api.duckduckgo.com/?q=simpsons+characters&format=json";
+    private static final String TAG = "JSonActivity";
+    private final static String FINAL_URL = BuildConfig.SERVER_URL_SIMP;
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
 
@@ -34,11 +38,11 @@ public class JSonActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_json);
-        jSonCall(jSonUrl);
+        volleyCall(FINAL_URL);
     }
 
-    private void jSonCall(String url) {
-        Log.d(TAG, "jSonCall: ");
+    private void volleyCall(String url) {
+        Log.d(TAG, "volleyCall: ");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,

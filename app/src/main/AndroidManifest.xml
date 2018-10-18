@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".AppController"
+        android:name=".utils.AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,8 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CharacterActivity" />
-        <activity android:name=".RetrofitActivity" />
-        <activity android:name=".JSonActivity"></activity>
+        <activity android:name=".retrofitflavor.RetrofitActivity" />
+        <activity android:name=".volleyflavor.JSonActivity"></activity>
     </application>
 
 </manifest>
