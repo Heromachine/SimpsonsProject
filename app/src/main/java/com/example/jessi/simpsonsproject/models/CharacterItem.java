@@ -1,17 +1,26 @@
 package com.example.jessi.simpsonsproject.models;
 
-public class Character {
+public class CharacterItem {
     private String name;
     private String description;
     private String imageUrl;
+    private boolean isFavorite = false;
 
-    public Character() {
+    public CharacterItem() {
     }
 
-    public Character(String description, String imageUrl) {
+    public CharacterItem(String description, String imageUrl) {
         this.name = prepareCharacterName(description);
         this.description = description;
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     public String getName() {

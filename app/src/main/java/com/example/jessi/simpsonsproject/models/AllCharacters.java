@@ -1,28 +1,26 @@
 package com.example.jessi.simpsonsproject.models;
 
-import com.example.jessi.simpsonsproject.models.Character;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class AllCharacters {
 
-    List<Character> characterList;
+    List<CharacterItem> characterItemList;
 
 
     public AllCharacters() {
-        characterList = new ArrayList<>();
+        characterItemList = new ArrayList<>();
     }
 
-    public List<Character> getCharacterList() {
-        return characterList;
+    public List<CharacterItem> getCharacterItemList() {
+        return characterItemList;
     }
 
-    public void setCharacterList(List<Character> characterList) {
-        this.characterList = characterList;
+    public void setCharacterItemList(List<CharacterItem> characterItemList) {
+        this.characterItemList = characterItemList;
     }
 
-    public void addCharacter(Character character) {
-        characterList.add(character);
+    public void addCharacter(CharacterItem characterItem) {
+        characterItemList.add(characterItem);
     }
 }

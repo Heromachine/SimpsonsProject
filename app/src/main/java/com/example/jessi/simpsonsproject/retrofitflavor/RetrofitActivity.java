@@ -7,12 +7,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.jessi.simpsonsproject.CharacterActivity;
 import com.example.jessi.simpsonsproject.R;
 import com.example.jessi.simpsonsproject.models.AllCharacters;
-import com.example.jessi.simpsonsproject.models.Character;
+import com.example.jessi.simpsonsproject.models.CharacterItem;
 import com.example.jessi.simpsonsproject.models.Simpsons;
 import com.example.jessi.simpsonsproject.retrofit.ApiService;
 import com.example.jessi.simpsonsproject.retrofit.RetrofitInstance;
@@ -27,11 +28,15 @@ public class RetrofitActivity extends AppCompatActivity {
     private final static String jSonUrl = "http://api.duckduckgo.com/?q=simpsons+characters&format=json";
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
+    ImageView ivStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrofit);
+
+        ivStart = findViewById(R.id.iv_star);
+
         retrofitCall();
     }
 
@@ -50,13 +55,12 @@ public class RetrofitActivity extends AppCompatActivity {
                 for (int i = 0; i < simpsons.getRelatedTopicsList().size(); i++) {
                     Log.d(TAG, "onResponse: Simpsons" + simpsons.getRelatedTopicsList().get(0));
 
-                    Character character = new Character(
+                    CharacterItem characterItem = new CharacterItem(
                             response.body().getRelatedTopicsList().get(i).getText(),
                             response.body().getRelatedTopicsList().get(i).getIcons().getURL());
-                    names.add((i + 1) + ")" + character.getName());
-                    allCharacters.addCharacter(character);
+                    names.add((i + 1) + ")" + characterItem.getName());
+                    allCharacters.addCharacter(characterItem);
                 }
-
                 arrayAdapter = new ArrayAdapter<String>
                         (
                                 RetrofitActivity.this,
@@ -64,21 +68,24 @@ public class RetrofitActivity extends AppCompatActivity {
                                 R.id.tv_character,
                                 names
                         );
+
                 listView = findViewById(R.id.lv_names_retrofit);
                 listView.setAdapter(arrayAdapter);
+
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                         Intent mIntent = new Intent(
                                 RetrofitActivity.this,
                                 CharacterActivity.class);
                         Bundle mBundle = new Bundle();
                         mBundle.putString(
-                                "Name", allCharacters.getCharacterList().get(i).getName());
+                                "Name", allCharacters.getCharacterItemList().get(i).getName());
                         mBundle.putString(
-                                "Description", allCharacters.getCharacterList().get(i).getDescription());
+                                "Description", allCharacters.getCharacterItemList().get(i).getDescription());
                         mBundle.putString(
-                                "ImageURL", allCharacters.getCharacterList().get(i).getImageUrl());
+                                "ImageURL", allCharacters.getCharacterItemList().get(i).getImageUrl());
                         mIntent.putExtras(mBundle);
                         startActivity(mIntent);
                     }
