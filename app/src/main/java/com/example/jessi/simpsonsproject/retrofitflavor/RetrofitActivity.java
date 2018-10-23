@@ -64,7 +64,7 @@ public class RetrofitActivity extends AppCompatActivity {
                 arrayAdapter = new ArrayAdapter<String>
                         (
                                 RetrofitActivity.this,
-                                R.layout.listitem,
+                                R.layout.list_item_all,
                                 R.id.tv_character,
                                 names
                         );

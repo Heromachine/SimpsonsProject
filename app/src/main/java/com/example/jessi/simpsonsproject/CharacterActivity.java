@@ -28,10 +28,12 @@ public class CharacterActivity extends AppCompatActivity {
         if(!getIntent().getExtras().getString("ImageURL").isEmpty())
         {
             Picasso.get().load(getIntent().getExtras().getString("ImageURL")).into(characterImage);
+
         }
         else
         {
             characterImage.setImageResource(R.drawable.ic_launcher_background);
         }
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_left);
     }
 }

@@ -5,6 +5,7 @@ public class CharacterItem {
     private String description;
     private String imageUrl;
     private boolean isFavorite = false;
+    private int quantity = 0;
 
     public CharacterItem() {
     }
@@ -13,6 +14,14 @@ public class CharacterItem {
         this.name = prepareCharacterName(description);
         this.description = description;
         this.imageUrl = imageUrl;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public boolean isFavorite() {

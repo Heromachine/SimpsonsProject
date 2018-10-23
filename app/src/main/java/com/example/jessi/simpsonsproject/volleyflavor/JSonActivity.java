@@ -7,8 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -18,7 +18,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.jessi.simpsonsproject.BuildConfig;
 import com.example.jessi.simpsonsproject.data.DBHelper;
 import com.example.jessi.simpsonsproject.utils.AppController;
-import com.example.jessi.simpsonsproject.CharacterActivity;
 import com.example.jessi.simpsonsproject.R;
 import com.example.jessi.simpsonsproject.models.AllCharacters;
 import com.example.jessi.simpsonsproject.models.CharacterItem;
@@ -36,38 +35,26 @@ public class JSonActivity extends AppCompatActivity {
     private final static String FINAL_URL = BuildConfig.SERVER_URL_SIMP;
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
-
-
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter customArrayAdapter;
 
-    DBHelper dbHelper;
+    Button btnFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recyclerview_characters);
-        dbHelper = new DBHelper(this);
+        btnFavorite = findViewById(R.id.btn_favorite);
         volleyCall(FINAL_URL);
-    }
-
-
-    private void addData(String newEntry){
-        boolean insertData = dbHelper.addDATA(newEntry);
-        if(insertData){
-            Log.d(TAG, "addData: PASSED" );
-        }
-        else {
-            Log.d(TAG, "addData: FAILED");
-        }
-    }
-    private void initDataBase(AllCharacters allCharacters){
-        for(int i = 0; i< allCharacters.getCharacterItemList().size(); i++){
-
-            addData(allCharacters.getCharacterItemList().get(i).getName());
-        }
-
+        btnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(JSonActivity.this, FavoritesActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_left);
+            }
+        });
 
     }
 
@@ -95,7 +82,7 @@ public class JSonActivity extends AppCompatActivity {
                                 Log.d(TAG, "onResponse: Name: " +  characterItem.getName());
                             }
 
-                            initDataBase(allCharacters);
+
                             recyclerView = findViewById(R.id.rv_characters);
                             layoutManager = new LinearLayoutManager(JSonActivity.this);
                             recyclerView.setLayoutManager(layoutManager);
@@ -116,6 +103,7 @@ public class JSonActivity extends AppCompatActivity {
             }
         });
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
+
     }
 
 
@@ -147,7 +135,7 @@ public class JSonActivity extends AppCompatActivity {
 //                            arrayAdapter = new ArrayAdapter<String>
 //                                    (
 //                                            JSonActivity.this,
-//                                            R.layout.listitem,
+//                                            R.layout.list_item_all,
 //                                            R.id.tv_character,
 //                                            names
 //                                    );

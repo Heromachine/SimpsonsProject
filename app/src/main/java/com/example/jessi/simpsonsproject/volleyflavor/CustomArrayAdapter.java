@@ -2,6 +2,7 @@ package com.example.jessi.simpsonsproject.volleyflavor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -28,17 +29,48 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
 
     public CustomArrayAdapter(Context context, List<CharacterItem> characterItems) {
         this.context = context;
-        this.characterItemList = characterItems;
-        this.characterItemList.get(0).setFavorite(true);
+        dbHelper = new DBHelper(context);
+
+        this.characterItemList = getCharacterFavorite(characterItems);
+        //this.characterItemList.get(0).setFavorite(true);
     }
 
+    private List<CharacterItem> getCharacterFavorite(List<CharacterItem> characterItems){
+        Log.d(TAG, "getAllCharacterFavorite: ");
+        Cursor cursor = dbHelper.getData();
+            while(cursor.moveToNext()){
+                Log.d(TAG, "\n\ngetCharacterFavorite: ============================================");
+                Log.d(TAG, "getCharacterFavorite: Cursor ID: "+  cursor.getString(0));
+                Log.d(TAG, "getCharacterFavorite: Cursor Name: "+  cursor.getString(1));
+
+                for(int i = 0; i < characterItems.size(); i++){
+                    Log.d(TAG, "getCharacterFavorite: FOR i =" +i);
+                    Log.d(TAG, "getCharacterFavorite: name = " + characterItems.get(i).getName());
+                    if(cursor.getString(1).contentEquals(characterItems.get(i).getName())){
+                        characterItems.get(i).setFavorite(true);
+                    }
+                }
+
+            }
+        return characterItems;
+    }
+
+    private void addData(String newEntry){
+        boolean insertData = dbHelper.addName(newEntry);
+        if(insertData){
+            Log.d(TAG, "addFavorite: PASSED" );
+        }
+        else {
+            Log.d(TAG, "addFavorite: FAILED");
+        }
+    }
 
 
     @NonNull
     @Override //CREATS VIEWHOLDER
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(this.context);
-        View view = inflater.inflate(R.layout.listitem, viewGroup, false);
+        View view = inflater.inflate(R.layout.list_item_all, viewGroup, false);
         CustomArrayAdapter.MyViewHolder myViewHolder = new CustomArrayAdapter.MyViewHolder(view, this.context, this.characterItemList);
         return myViewHolder;
     }
@@ -47,6 +79,7 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int pos) {
 
         myViewHolder.tvCharacterName.setText(characterItemList.get(pos).getName());
+
         if (!characterItemList.get(pos).isFavorite()) {
             myViewHolder.ivStar.setImageResource(R.drawable.ic_star_black_24dp);
         }
@@ -74,6 +107,8 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
                 mBundle.putString("ImageURL", characterItemList.get(pos).getImageUrl());
                 mIntent.putExtras(mBundle);
                 context.startActivity(mIntent);
+
+
             }
         });
 
@@ -81,15 +116,22 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
             @Override
             public void onClick(View view) {
                 if (characterItemList.get(pos).isFavorite())
-                {
+                {//DELETE FAVORITE
                     characterItemList.get(pos).setFavorite(false);
                     myViewHolder.ivStar.setImageResource(R.drawable.ic_star_black_24dp);
+                    dbHelper.deleteRow(characterItemList.get(pos).getName());
+
                 }
 
                 else
-                {
+                {//ADD FAVORITE
                     characterItemList.get(pos).setFavorite(true);
                     myViewHolder.ivStar.setImageResource(R.drawable.ic_star_gold_24dp);
+                    dbHelper.addCharacter(
+                            characterItemList.get(pos).getName(),
+                            characterItemList.get(pos).getImageUrl(),
+                            characterItemList.get(pos).getDescription()
+                            );
                 }
 
             }
