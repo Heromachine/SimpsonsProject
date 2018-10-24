@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,15 +49,34 @@ public class JSonActivity extends AppCompatActivity {
         setContentView(R.layout.recyclerview_characters);
         btnFavorite = findViewById(R.id.btn_favorite);
         volleyCall(FINAL_URL);
-        btnFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(JSonActivity.this, FavoritesActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_left);
-            }
-        });
+//        btnFavorite.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View view) {
+////                Intent intent = new Intent(JSonActivity.this, FavoritesActivity.class);
+////                startActivity(intent);
+////                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_left);
+////            }
+////        });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_all_characters, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == R.id.btn_fav)
+        {
+            Intent intent = new Intent(JSonActivity.this, FavoritesActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_left);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void volleyCall(String url) {

@@ -90,7 +90,7 @@ public class CustomArrayAdapter extends RecyclerView.Adapter<CustomArrayAdapter.
         if(!characterItemList.get(pos).getImageUrl().isEmpty())
         {
             Picasso.get().load(characterItemList.get(pos).getImageUrl())
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.default_image)
                 .into(myViewHolder.ivThumbNail);
 
         }else{
